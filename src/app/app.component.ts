@@ -1,6 +1,10 @@
 import { Component } from '@angular/core';
+import { User } from './models/user.model';
 
-import { Product } from './models/product.model';
+import { AuthService } from './services/auth.service';
+import { UsersService } from './services/users.service';
+
+
 
 @Component({
   selector: 'app-root',
@@ -10,8 +14,20 @@ import { Product } from './models/product.model';
 export class AppComponent {
   imgParent = '';
   showImg = true;
+  token = '';
+  prof: User = {
+    id: '',
+    name: '',
+    email: '',
+    password: 0
+  };
 
+  constructor(
+    private authService: AuthService,
+    private usersService: UsersService
+  ) {
 
+  }
   onLoaded(img: string) {
     console.log('log padre', img);
   }
