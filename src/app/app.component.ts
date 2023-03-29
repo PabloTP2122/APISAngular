@@ -4,6 +4,8 @@ import { User } from './models/user.model';
 import { AuthService } from './services/auth.service';
 import { UsersService } from './services/users.service';
 
+import { FilesService } from './services/files.service';
+
 
 
 @Component({
@@ -21,10 +23,11 @@ export class AppComponent {
     email: '',
     password: 0
   };
-
+  imgRta = '';
   constructor(
     private authService: AuthService,
-    private usersService: UsersService
+    private usersService: UsersService,
+    private fileService: FilesService
   ) {
 
   }
@@ -34,5 +37,21 @@ export class AppComponent {
 
   toggleImg() {
     this.showImg = !this.showImg;
+  }
+
+  download() {
+    this.fileService.getFile('Archivo', 'https://young-sands-07814.herokuapp.com/api/files/dummy.pdf', 'application/pdf')
+      .subscribe();
+  }
+  onUpload(event: Event) {
+    const element = event.target as HTMLInputElement;
+    const file = element.files?.item(0) as Blob;
+    if (file) {
+      this.fileService.uploadFile(file).
+        subscribe(rta => {
+          this.imgRta = rta.location;
+          console.log(rta.location);
+        });
+    }
   }
 }
